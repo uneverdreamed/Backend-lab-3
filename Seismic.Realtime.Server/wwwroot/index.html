@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сейсмический мониторинг — дашборд</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-100 min-h-screen p-6">
+    <div class="max-w-5xl mx-auto space-y-4">
+        <header class="flex items-center justify-between bg-white rounded-xl shadow p-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Сейсмический мониторинг</h1>
+                <p class="text-sm text-slate-500" id="processed-by">подключение...</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="status" class="text-sm px-3 py-1 rounded-full bg-slate-200 text-slate-700">offline</span>
+                <span id="observer" class="text-xs text-slate-400"></span>
+            </div>
+        </header>
+
+        <section class="bg-white rounded-xl shadow p-4 space-y-3">
+            <h2 class="font-semibold text-slate-700">Управление</h2>
+            <div class="flex flex-wrap items-center gap-2">
+                <label class="text-sm text-slate-600">Регион:</label>
+                <select id="region" class="px-3 py-2 border rounded-lg text-sm">
+                    <option value="">— все —</option>
+                    <option value="kamchatka">Камчатка</option>
+                    <option value="caucasus">Кавказ</option>
+                    <option value="altai">Алтай</option>
+                    <option value="sakhalin">Сахалин</option>
+                </select>
+                <button id="apply-region" class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">Подписаться</button>
+
+                <label class="text-sm text-slate-600 ml-4">Порог амплитуды:</label>
+                <input id="threshold" type="number" step="0.1" min="0"
+                       class="w-24 px-3 py-2 border rounded-lg text-sm">
+                <button id="apply-threshold" class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">Изменить</button>
+
+                <button id="ping" class="px-3 py-2 rounded-lg bg-slate-200 text-slate-700 text-sm hover:bg-slate-300 ml-4">ping</button>
+                <button id="send-bad" class="px-3 py-2 rounded-lg bg-amber-100 text-amber-800 text-sm hover:bg-amber-200" title="Отправить заведомо невалидное сообщение">Отправить мусор</button>
+            </div>
+            <div id="last-error" class="text-sm text-red-600 hidden"></div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow p-4">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="font-semibold text-slate-700">Станции</h2>
+                <span class="text-xs text-slate-400" id="subscription-info">подписка: все регионы</span>
+            </div>
+            <div id="stations" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <p id="stations-empty" class="text-sm text-slate-400">данных ещё нет</p>
+        </section>
+
+        <section class="bg-white rounded-xl shadow p-4">
+            <h2 class="font-semibold text-slate-700 mb-3">Лента алертов</h2>
+            <div id="alerts" class="space-y-2 max-h-80 overflow-y-auto"></div>
+            <p id="alerts-empty" class="text-sm text-slate-400">алертов пока нет</p>
+        </section>
+    </div>
+
+    <template id="station-template">
+        <div class="border rounded-lg p-3 flex flex-col gap-1" data-station>
+            <div class="flex items-center justify-between">
+                <span class="font-semibold text-slate-800" data-station-id></span>
+                <span class="text-xs px-2 py-0.5 rounded-full" data-status></span>
+            </div>
+            <div class="text-xs text-slate-500" data-region></div>
+            <div class="text-lg font-mono" data-amplitude></div>
+            <div class="text-xs text-slate-400" data-noise></div>
+            <div class="text-xs text-slate-400" data-last-tick></div>
+        </div>
+    </template>
+
+    <template id="alert-template">
+        <div class="border-l-4 border-red-500 pl-3 py-1">
+            <div class="text-sm font-semibold text-slate-800" data-title></div>
+            <div class="text-xs text-slate-500" data-meta></div>
+        </div>
+    </template>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

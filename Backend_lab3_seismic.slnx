@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Seismic.Realtime.Server/Seismic.Realtime.Server.csproj" />
+  <Project Path="Seismic.Realtime.Station/Seismic.Realtime.Station.csproj" />
+</Solution>
